@@ -1,5 +1,6 @@
 {
   "name": "elementTransitions",
+  "main": "build/elementTransitions.min.js"
   "version": "0.1.1",
   "devDependencies": {
     "grunt": "~0.4.5",
