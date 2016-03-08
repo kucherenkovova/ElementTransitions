@@ -118,35 +118,35 @@ var ElementTransitions = function(){
 
     // I commented that to trigger the animation at the same time, without unwanter delay. Need to find a good way to do it
     // currentBlock.addEventListener(self.animationEndEventName, function (event){
-      // currentBlock.removeEventListener(self.animationEndEventName, arguments.callee);
+    // currentBlock.removeEventListener(self.animationEndEventName, arguments.callee);
 
-      // Switch current block
-      var prevBlock = currentBlock;
-      // + operator in front of variable cast it to Number(). Less readable but more concise.
-      if(reverse){
-        current = (overflow) ? (+current - +step) + blocks.length : +current - +step;
-      } else {
-        current = (overflow) ? (+current + +step) - blocks.length : +current + +step;
+    // Switch current block
+    var prevBlock = currentBlock;
+    // + operator in front of variable cast it to Number(). Less readable but more concise.
+    if(reverse){
+      current = (overflow) ? (+current - +step) + blocks.length : +current - +step;
+    } else {
+      current = (overflow) ? (+current + +step) - blocks.length : +current + +step;
+    }
+    wrapper.dataset.current = current;
+    currentBlock = blocks[current];
+
+    for (var i = 0; i < inClass.length; i++) {
+      toggleClass(currentBlock, inClass[i]);
+      toggleClass(currentBlock, 'et-block-current');
+    }
+
+    currentBlock.addEventListener(self.animationEndEventName, function (event){
+      currentBlock.removeEventListener(self.animationEndEventName, arguments.callee);
+
+      prevBlock.className = prevBlock.dataset.originalClassList;
+      currentBlock.className = currentBlock.dataset.originalClassList + ' et-block-current';
+
+      wrapper.dataset.isAnimating = false;
+      if(typeof self.afterAnimation == 'function'){
+        self.afterAnimation(prevBlock, currentBlock);
       }
-      wrapper.dataset.current = current;
-      currentBlock = blocks[current];
-
-      for (var i = 0; i < inClass.length; i++) {
-        toggleClass(currentBlock, inClass[i]);
-        toggleClass(currentBlock, 'et-block-current');
-      }
-
-      currentBlock.addEventListener(self.animationEndEventName, function (event){
-        currentBlock.removeEventListener(self.animationEndEventName, arguments.callee);
-
-        prevBlock.className = prevBlock.dataset.originalClassList;
-        currentBlock.className = currentBlock.dataset.originalClassList + ' et-block-current';
-
-        wrapper.dataset.isAnimating = false;
-        if(typeof self.afterAnimation == 'function'){
-          self.afterAnimation(prevBlock, currentBlock);
-        }
-      });
+    });
     // });
   }
 
@@ -250,4 +250,4 @@ var ElementTransitions = function(){
   }
 }
 
-var elementTransitions = ElementTransitions();
+module.exports = ElementTransitions();
