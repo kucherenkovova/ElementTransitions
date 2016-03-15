@@ -97,7 +97,7 @@ var ElementTransitions = function(){
       overflow = (+current + +step) > (blocks.length - 1);
     }
 
-    if((wrapper.dataset.isAnimating == 'true') || (overflow && wrapper.loop == 'false')){
+    if((wrapper.dataset.isAnimating == 'true') || (overflow && wrapper.loop == 'false')){
       return false;
     }
     wrapper.dataset.isAnimating = true;
@@ -136,8 +136,8 @@ var ElementTransitions = function(){
       toggleClass(currentBlock, 'et-block-current');
     }
 
-    currentBlock.addEventListener(self.animationEndEventName, function (event){
-      currentBlock.removeEventListener(self.animationEndEventName, arguments.callee);
+    var listener = function (event){
+      currentBlock.removeEventListener(self.animationEndEventName, listener);
 
       prevBlock.className = prevBlock.dataset.originalClassList;
       currentBlock.className = currentBlock.dataset.originalClassList + ' et-block-current';
@@ -146,7 +146,8 @@ var ElementTransitions = function(){
       if(typeof self.afterAnimation == 'function'){
         self.afterAnimation(prevBlock, currentBlock);
       }
-    });
+    }
+    currentBlock.addEventListener(self.animationEndEventName, listener);
     // });
   }
 
@@ -250,4 +251,4 @@ var ElementTransitions = function(){
   }
 }
 
-module.exports = ElementTransitions();
+module.exports = new ElementTransitions();
